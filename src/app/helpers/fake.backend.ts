@@ -3,7 +3,8 @@ import {
     HttpRequest, 
     HttpHandler,
     HttpEvent,
-    HttpResponse
+    HttpResponse,
+    HTTP_INTERCEPTORS
 } from '@angular/common/http';
 
 import { Injectable } from '@angular/core';
@@ -16,6 +17,7 @@ let users = JSON.parse(localStorage.getItem('users')) || [];
 export class FakeBackendInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next:HttpHandler): Observable<HttpEvent<any>> {
+        
         const { url, method, headers, body } = req;
 
         return of(null)
@@ -47,8 +49,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             return ok({
                 id: user.id,
                 username: user.username,
-                firstName: user.firstName,
-                lastName: user.lastName,
+                name: user.name,
                 token: 'fake-jwt-token'
             })
         }
@@ -104,3 +105,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
     }
 }
+
+export const fakeBackendProvider = {
+    // use fake backend in place of Http service for backend-less development
+    provide: HTTP_INTERCEPTORS,
+    useClass: FakeBackendInterceptor,
+    multi: true
+};

@@ -17,7 +17,13 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "emitDecoratorMetadata": true,
+    "paths": {
+      "@/*": [
+          "app/*"
+      ]
+  }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
